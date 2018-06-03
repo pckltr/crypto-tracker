@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html ng-app="CryptoApp">
+
+<head>
+    <script type="text/javascript" src="vendors/angular.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+    <link rel="stylesheet" type="text/css" href="style/css/fontawesome-all.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Tracker</title>
+</head>
+
+<body>
+    <div class="container" ng-controller="CryptoController">
+        <header class="header">
+            <div class="wrapper">
+                <label class="header_label" for="filter"><i class="fas fa-search"></i></label>
+                <input id="filter" class="header_filter" ng-model="query" type="text" placeholder="Filter by" autofocus>
+            </div>
+        </header>
+        <div class="loader" ng-show="!isLoaded"><i class="fas fa-spinner"></i></div>
+        <section class="main" ng-show="isLoaded">
+            <div class="wrapper">
+                <div class="overview">
+                    <div class="card">
+                        <div class="card_label">Total</div>
+                        <div class="card_number">${{overview.total | number: 2}}</div>
+                    </div>
+                    <div class="card">
+                        <div class="card_label">Invested</div>
+                        <div class="card_number">${{overview.total_invested | number: 2}}</div>
+                    </div>
+                    <div class="card">
+                        <div class="card_label">Profit</div>
+                        <div class="card_number">${{overview.profit | number: 2}} <span class="percent" ng-class="getClass(overview.profit_percent)">({{overview.profit_percent | number: 2}}%)</span></div>
+                    </div>
+                </div>
+                <div class="table">
+                    <div class="row_header">
+                        <div class="cell">Name</div>
+                        <div class="cell">Bought Price</div>
+                        <div class="cell">Current Price</div>
+                        <div class="cell">Quantity</div>
+                        <div class="cell">1h</div>
+                        <div class="cell">24h</div>
+                        <div class="cell">7d</div>
+                        <div class="cell">Total</div>
+                        <div class="cell">Profit</div>
+                    </div>
+                    <div class="row" ng-repeat="crypto in myCryptoList | filter:query">
+                        <div class="cell"><span class="cell_label">Name</span><img ng-src="https://s2.coinmarketcap.com/static/img/coins/16x16/{{crypto.id}}.png">{{crypto.name}} ({{crypto.symbol}})</div>
+                        <div class="cell"><span class="cell_label">Bought Price</span>${{crypto.bought_price | number:2}}</div>
+                        <div class="cell"><span class="cell_label">Current Price</span>${{crypto.price | number:2}}</div>
+                        <div class="cell"><span class="cell_label">Quantity</span>{{crypto.quantity}} {{crypto.symbol}}</div>
+                        <div class="cell"><span class="cell_label">1h</span><span ng-class="getClass(crypto.percent_change_1h)">{{crypto.percent_change_1h}}%</span></div>
+                        <div class="cell"><span class="cell_label">24h</span><span ng-class="getClass(crypto.percent_change_24h)">{{crypto.percent_change_1h}}%</span></div>
+                        <div class="cell"><span class="cell_label">7d</span><span ng-class="getClass(crypto.percent_change_7d)">{{crypto.percent_change_1h}}%</span></div>
+                        <div class="cell"><span class="cell_label">Total</span>${{crypto.total | number:2}}</div>
+                        <div class="cell"><span class="cell_label">Profit</span>${{crypto.profit | number: 0}}<span class="cell_percent" ng-class="getClass(crypto.profit_percent)">({{crypto.profit_percent | number: 0}}%)</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>
